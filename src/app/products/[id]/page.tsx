@@ -2,18 +2,37 @@
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { LiaEdit } from "react-icons/lia";
 
-const myLoader = ({ src }: any) => {
+const myLoader = ({ src }: { src: string }) => {
   return src;
 };
 
-const ProductDetails = ({ params }: any) => {
+type Product = {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  description: string;
+  image: string;
+  user: {
+    id: string;
+  };
+};
+
+interface Params {
+  id: string;
+}
+
+const ProductDetails = ({ params }: { params: Params }) => {
   const { id } = params;
-  const [product, setProduct] = useState("");
+  const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoad] = useState(true);
+  const user = localStorage.getItem("id");
+  const router = useRouter();
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -30,6 +49,19 @@ const ProductDetails = ({ params }: any) => {
     };
     fetchDetails();
   }, [id]);
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://127.0.0.1:8000/products/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accToken")}`,
+        },
+      });
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -48,7 +80,7 @@ const ProductDetails = ({ params }: any) => {
                   <Image
                     loader={myLoader}
                     className="h-[500px] w-[500px]"
-                    src={product?.image}
+                    src={product?.image || ""}
                     alt=""
                     height={400}
                     width={400}
@@ -68,31 +100,27 @@ const ProductDetails = ({ params }: any) => {
                   <p className="text-gray-600  my-6">{product?.description}</p>
                 </div>
               </div>
-              {/* {item?.user?.id == userId ?  */}
-              {/* ( */}
-              <>
-                <div className="mb-12 flex justify-around">
-                  <Link href={`/shop/${id}/update`}>
-                    <button className="flex justify-center items-center px-4 py-3 bg-green-600 font-bold text-white">
-                      <LiaEdit className="text-3xl mr-3" />
-                      Update Product
+              {product?.user?.id == user ? (
+                <>
+                  <div className="mb-12 flex justify-around">
+                    <Link href={`/shop/${id}/update`}>
+                      <button className="flex justify-center items-center px-4 py-3 bg-green-600 font-bold text-white">
+                        <LiaEdit className="text-3xl mr-3" />
+                        Update Product
+                      </button>
+                    </Link>
+                    <button
+                      onClick={handleDelete}
+                      className="flex justify-center items-center px-4 py-3 bg-red-600 font-bold text-white"
+                    >
+                      <AiOutlineDelete className="text-3xl mr-3" />
+                      Delete Product
                     </button>
-                  </Link>
-                  <button
-                    // onClick={handleDelete}
-                    className="flex justify-center items-center px-4 py-3 bg-red-600 font-bold text-white"
-                  >
-                    <AiOutlineDelete className="text-3xl mr-3" />
-                    Delete Product
-                  </button>
-                </div>
-              </>
-              {/* ) */}
-              {/* : 
-            
-            (
-              <></>
-            )} */}
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
           </>
         )}

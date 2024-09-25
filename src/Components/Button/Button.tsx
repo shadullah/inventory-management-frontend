@@ -1,6 +1,13 @@
-import React from "react";
+import React, { ButtonHTMLAttributes, ReactNode } from "react";
 
-const Button = ({
+interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
+  bgColor?: string;
+  textColor?: string;
+  className?: string;
+}
+
+const Button: React.FC<BtnProps> = ({
   children,
   bgColor = "bg-orange-600",
   textColor = "text-white",

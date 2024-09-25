@@ -1,16 +1,32 @@
 "use client";
 import Button from "@/Components/Button/Button";
 import Input from "@/Components/Input/Input";
+import axios from "axios";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 // import { useForm } from "react-hook-form";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const [error, seterror] = useState("");
 
-  const login = () => {};
+  const login = async (data: any) => {
+    console.log(data);
+    try {
+      const res = await axios.post("http://127.0.0.1:8000/users/v1/login/", {
+        username: data.username,
+        password: data.password,
+      });
+      console.log("Logged in", res.data);
+      localStorage.setItem("id", res.data.user.id);
+      window.location.href = "/";
+      toast.success("logged in", { duration: 3000 });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -40,16 +56,10 @@ const Login = () => {
             <div className="space-y-5">
               <Input
                 label="Username: "
-                placeholder="Enter your email"
-                type="email"
-                {...register("email", {
+                placeholder="Enter your username"
+                type="name"
+                {...register("username", {
                   required: true,
-                  validate: {
-                    matchPatern: (value) =>
-                      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(
-                        value
-                      ) || "Email address must be a valid address",
-                  },
                 })}
               />
               <Input

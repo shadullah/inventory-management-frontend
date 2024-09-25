@@ -3,7 +3,6 @@ import Button from "@/Components/Button/Button";
 import Input from "@/Components/Input/Input";
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";

@@ -30,7 +30,7 @@ const Navbar = () => {
           <ul className="flex space-x-4">
             {id ? (
               <>
-                <Link href="/authenticate/login">
+                <Link href="/products/add">
                   <li>Add Product</li>
                 </Link>
                 <li>

@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
-  const [error, seterror] = useState("");
+  const [error] = useState("");
 
   const login = async (data: any) => {
     console.log(data);

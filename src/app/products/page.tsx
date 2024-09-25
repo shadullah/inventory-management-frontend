@@ -21,6 +21,11 @@ type Prod = {
   };
 };
 
+type ApiResponse = {
+  count: number;
+  results: Prod[];
+};
+
 const Products = () => {
   const [products, setProducts] = useState<Prod[]>([]);
   const [loading, setLoad] = useState(true);
@@ -34,7 +39,7 @@ const Products = () => {
         const url = searchQ
           ? `http://127.0.0.1:8000/products/?search=${searchQ}`
           : `http://127.0.0.1:8000/products/?page=${currentP}`;
-        const res = await axios.get(url);
+        const res = await axios.get<ApiResponse>(url);
         console.log(res?.data);
         setProducts(res?.data?.results || []);
         setTtlP(Math.ceil(res?.data?.count / 4));

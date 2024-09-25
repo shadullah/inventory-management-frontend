@@ -1,10 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+interface User {
+  id: string;
+}
+
 const useUsers = () => {
   const userId = localStorage.getItem("id");
 
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const getUser = async () => {

@@ -2,6 +2,8 @@
 import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { BiSearchAlt2 } from "react-icons/bi";
+import { FaSearch } from "react-icons/fa";
 
 const myLoader = ({ src }) => {
   return src;
@@ -12,13 +14,15 @@ const Products = () => {
   const [loading, setLoad] = useState(true);
   const [currentP, setCurrentP] = useState(1);
   const [ttlP, setTtlP] = useState(1);
+  const [searchQ, setSearchQ] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(
-          `http://127.0.0.1:8000/products/?page=${currentP}`
-        );
+        const url = searchQ
+          ? `http://127.0.0.1:8000/products/?search=${searchQ}`
+          : `http://127.0.0.1:8000/products/?page=${currentP}`;
+        const res = await axios.get(url);
         console.log(res?.data);
         setProducts(res?.data?.results);
         setTtlP(Math.ceil(res?.data?.count / 4));
@@ -29,16 +33,43 @@ const Products = () => {
       }
     };
     fetchProducts();
-  }, [currentP]);
+  }, [currentP, searchQ]);
 
   const truncate = (str, len) => {
     if (str.length <= len) return str;
     return str.slice(0, len) + "...";
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setCurrentP(1);
+    // setLoad(true);
+  };
+
   return (
     <div className="my-6">
-      <h1 className="text-3xl text-center">Products</h1>
+      <div className="flex justify-between items-center">
+        <div>
+          <span className="text-3xl text-center">Products</span>
+        </div>
+        <div>
+          <form onSubmit={handleSearch} className="">
+            <div className="flex items-center px-6 py-3 rounded-lg mt-6">
+              <input
+                type="text"
+                className="bg-transparent border-b-2 bg-gray-300 p-[2.5px] outline-none w-full"
+                placeholder="Search Here..."
+                name="search"
+                onChange={(e) => setSearchQ(e.target.value)}
+                value={searchQ}
+              />
+              <button type="submit" className="">
+                <BiSearchAlt2 className="text-3xl border-b-2 p-1 " />
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
 
       <div>
         {loading ? (
@@ -47,7 +78,7 @@ const Products = () => {
           </>
         ) : (
           <>
-            {products.length === 0 ? (
+            {searchQ && products.length === 0 ? (
               <>
                 <p>No Products found</p>
               </>
@@ -83,9 +114,9 @@ const Products = () => {
                   <button
                     onClick={() => setCurrentP((prev) => Math.max(prev - 1, 1))}
                     disabled={currentP === 1}
-                    className="bg-gray-800 px-3 py-2"
+                    className="bg-gray-800 px-3 py-2 rounded-md"
                   >
-                    Prev
+                    &larr; Prev
                   </button>
                   <span className="font-bold text-md">
                     Page {currentP} of {ttlP}
@@ -95,9 +126,9 @@ const Products = () => {
                       setCurrentP((prev) => Math.min(prev + 1, ttlP))
                     }
                     disabled={currentP === ttlP}
-                    className="bg-gray-800 px-3 py-2"
+                    className="bg-gray-800 px-3 py-2 rounded-md"
                   >
-                    Next
+                    Next &rarr;
                   </button>
                 </div>
               </>

@@ -1,6 +1,14 @@
 "use client";
 import axios from "axios";
+import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
+import { LiaEdit } from "react-icons/lia";
+
+const myLoader = ({ src }: any) => {
+  return src;
+};
 
 const ProductDetails = ({ params }: any) => {
   const { id } = params;
@@ -13,7 +21,7 @@ const ProductDetails = ({ params }: any) => {
         const url = `http://127.0.0.1:8000/products/${id}/`;
         const res = await axios.get(url);
         console.log(res?.data);
-        // setProduct(res?.data?.results);
+        setProduct(res?.data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -26,6 +34,69 @@ const ProductDetails = ({ params }: any) => {
   return (
     <div>
       <h1 className="text-4xl text-center my-12">Details</h1>
+
+      <div>
+        {loading ? (
+          <>
+            <div className="my-12">Loading....</div>
+          </>
+        ) : (
+          <>
+            <div className="max-w-[1200px] mx-auto">
+              <div className="block md:flex justify-between items-center">
+                <div className="p-12 w-1/2">
+                  <Image
+                    loader={myLoader}
+                    className="h-[500px] w-[500px]"
+                    src={product?.image}
+                    alt=""
+                    height={400}
+                    width={400}
+                  />
+                </div>
+                <div className="w-1/2 text-start">
+                  <h1 className="text-2xl font-bold">{product?.name}</h1>
+
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-3xl font-bold my-6 text-orange-500">
+                      ${product?.price}
+                    </h3>
+                    <h3 className="text-3xl font-bold my-6 ">
+                      Quantity: {product?.quantity}
+                    </h3>
+                  </div>
+                  <p className="text-gray-600  my-6">{product?.description}</p>
+                </div>
+              </div>
+              {/* {item?.user?.id == userId ?  */}
+              {/* ( */}
+              <>
+                <div className="mb-12 flex justify-around">
+                  <Link href={`/shop/${id}/update`}>
+                    <button className="flex justify-center items-center px-4 py-3 bg-green-600 font-bold text-white">
+                      <LiaEdit className="text-3xl mr-3" />
+                      Update Product
+                    </button>
+                  </Link>
+                  <button
+                    // onClick={handleDelete}
+                    className="flex justify-center items-center px-4 py-3 bg-red-600 font-bold text-white"
+                  >
+                    <AiOutlineDelete className="text-3xl mr-3" />
+                    Delete Product
+                  </button>
+                </div>
+              </>
+              {/* ) */}
+              {/* : 
+            
+            (
+              <></>
+            )} */}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };

@@ -103,7 +103,7 @@ const ProductDetails = ({ params }: { params: Params }) => {
               {product?.user?.id == user ? (
                 <>
                   <div className="mb-12 flex justify-around">
-                    <Link href={`/shop/${id}/update`}>
+                    <Link href={`/products/update/${id}`}>
                       <button className="flex justify-center items-center px-4 py-3 bg-green-600 font-bold text-white">
                         <LiaEdit className="text-3xl mr-3" />
                         Update Product

@@ -14,6 +14,8 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("id");
+    localStorage.removeItem("token");
+    localStorage.removeItem("accToken");
     setUserId(null);
     window.location.href = "/authenticate/login";
   };

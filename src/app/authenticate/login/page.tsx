@@ -8,20 +8,27 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 // import { useForm } from "react-hook-form";
 
+interface loginData {
+  username: string;
+  password: string;
+}
+
 const Login = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<loginData>();
   const [error] = useState("");
 
-  const login = async (data: any) => {
+  const login = async (data: loginData) => {
     console.log(data);
     try {
       const res = await axios.post("http://127.0.0.1:8000/users/v1/login/", {
         username: data.username,
         password: data.password,
       });
-      console.log("Logged in", res.data);
       localStorage.setItem("id", res.data.user.id);
+      localStorage.setItem("token", res.data.refresh);
+      localStorage.setItem("accToken", res.data.access);
       window.location.href = "/";
+      console.log("Logged in", res.data);
       toast.success("logged in", { duration: 3000 });
     } catch (error) {
       console.log(error);

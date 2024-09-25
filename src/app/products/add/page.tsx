@@ -1,26 +1,45 @@
 "use client";
 import Button from "@/Components/Button/Button";
 import Input from "@/Components/Input/Input";
+import useUsers from "@/Hooks/useUsers";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React from "react";
 import { useForm } from "react-hook-form";
 
-const Product_crud = () => {
-  const { register, handleSubmit } = useForm();
-  const router = useRouter();
+interface ProductData {
+  name: string;
+  description: string;
+  quantity: number;
+  price: number;
+  image: string;
+}
 
-  const add = async (data) => {
+const Product_crud = () => {
+  const { register, handleSubmit } = useForm<ProductData>();
+  const router = useRouter();
+  const [user] = useUsers();
+  const tok = localStorage.getItem("accToken");
+
+  const add = async (data: ProductData) => {
     console.log(data);
     try {
-      const res = await axios.post("http://127.0.0.1:8000/products/", {
-        name: data.name,
-        description: data.description,
-        quantity: data.quantity,
-        price: data.price,
-        image: data.image,
-      });
-      console.log("product added success", res.data);
+      const res = await axios.post(
+        "http://127.0.0.1:8000/products/",
+        {
+          name: data.name,
+          description: data.description,
+          quantity: data.quantity,
+          price: data.price,
+          image: data.image,
+          user: user?.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${tok}`,
+          },
+        }
+      );
+      console.log("poduct added success", res.data);
       router.push("/");
     } catch (error) {
       console.log(error);

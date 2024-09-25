@@ -1,11 +1,11 @@
 "use client";
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
-import { FaSearch } from "react-icons/fa";
 
-const myLoader = ({ src }) => {
+const myLoader = ({ src }: any) => {
   return src;
 };
 
@@ -43,7 +43,7 @@ const Products = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     setCurrentP(1);
-    // setLoad(true);
+    setLoad(true);
   };
 
   return (
@@ -102,9 +102,11 @@ const Products = () => {
                           <p>$ {prod?.price}</p>
                         </div>
                         <div>
-                          <button className="px-4 py-3 rounded-lg bg-orange-500">
-                            Details
-                          </button>
+                          <Link href={`products/${prod?.id}`}>
+                            <button className="px-4 py-3 rounded-lg bg-orange-500">
+                              Details
+                            </button>
+                          </Link>
                         </div>
                       </div>
                     </div>

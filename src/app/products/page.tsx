@@ -87,7 +87,7 @@ const Products = () => {
                   >
                     Prev
                   </button>
-                  <span>
+                  <span className="font-bold text-md">
                     Page {currentP} of {ttlP}
                   </span>
                   <button

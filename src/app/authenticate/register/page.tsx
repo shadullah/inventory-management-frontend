@@ -7,6 +7,15 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
+interface RegData {
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+}
+
 const Register = () => {
   //   const router = useRouter();
   const {
@@ -15,12 +24,12 @@ const Register = () => {
     watch,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<RegData>();
   const [error, setErr] = useState("");
 
   const password = watch("password");
 
-  const create = async (data: any) => {
+  const create = async (data: RegData) => {
     console.log(data);
     setErr("");
     try {

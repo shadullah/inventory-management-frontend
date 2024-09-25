@@ -5,12 +5,24 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
 
-const myLoader = ({ src }: any) => {
+const myLoader = ({ src }: { src: string }) => {
   return src;
 };
 
+type Prod = {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  description: string;
+  image: string;
+  user: {
+    id: string;
+  };
+};
+
 const Products = () => {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Prod[]>([]);
   const [loading, setLoad] = useState(true);
   const [currentP, setCurrentP] = useState(1);
   const [ttlP, setTtlP] = useState(1);
@@ -24,7 +36,7 @@ const Products = () => {
           : `http://127.0.0.1:8000/products/?page=${currentP}`;
         const res = await axios.get(url);
         console.log(res?.data);
-        setProducts(res?.data?.results);
+        setProducts(res?.data?.results || []);
         setTtlP(Math.ceil(res?.data?.count / 4));
       } catch (error) {
         console.log(error);
@@ -35,12 +47,12 @@ const Products = () => {
     fetchProducts();
   }, [currentP, searchQ]);
 
-  const truncate = (str, len) => {
+  const truncate = (str: string, len: number) => {
     if (str.length <= len) return str;
     return str.slice(0, len) + "...";
   };
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setCurrentP(1);
     setLoad(true);
@@ -78,14 +90,14 @@ const Products = () => {
           </>
         ) : (
           <>
-            {searchQ && products.length === 0 ? (
+            {searchQ && products?.length === 0 ? (
               <>
                 <p>No Products found</p>
               </>
             ) : (
               <>
                 <div className="grid grid-cols-4 gap-6 my-12">
-                  {products.map((prod) => (
+                  {products?.map((prod) => (
                     <div key={prod?.id} className="mb-6">
                       <Image
                         loader={myLoader}

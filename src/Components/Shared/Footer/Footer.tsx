@@ -4,7 +4,7 @@ import React from "react";
 const Footer = () => {
   return (
     <div>
-      <p className="text-center text-lg">
+      <p className="text-center text-lg my-4">
         &copy; Copyright Reserved by{" "}
         <Link className="font-bold" href="https://shadullah.vercel.app/">
           Shadullah

@@ -112,7 +112,7 @@ const Products = () => {
                     </div>
                   ))}
                 </div>
-                <div className="flex justify-center items-center my-4 space-x-4">
+                <div className="flex justify-center items-center my-4 space-x-4 mb-12">
                   <button
                     onClick={() => setCurrentP((prev) => Math.max(prev - 1, 1))}
                     disabled={currentP === 1}

@@ -20,7 +20,9 @@ const useUsers = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await axios.get(`http://127.0.0.1:8000/users/${data}/`);
+        const res = await axios.get(
+          `https://inventory-management-backend-nu.vercel.app/users/${data}/`
+        );
         setUser(res.data);
       } catch (error) {
         console.log(error);

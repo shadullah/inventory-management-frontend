@@ -54,7 +54,7 @@ const Product_crud = ({ prod }: ProdProps) => {
     console.log(config);
     if (prod) {
       await axios.put(
-        `http://127.0.0.1:8000/products/${prod.id}/`,
+        `https://inventory-management-backend-nu.vercel.app/products/${prod.id}/`,
         {
           name: data.name,
           description: data.description,
@@ -69,7 +69,7 @@ const Product_crud = ({ prod }: ProdProps) => {
       router.push(`/products/${prod.id}`);
     } else {
       await axios.post(
-        "http://127.0.0.1:8000/products/",
+        "https://inventory-management-backend-nu.vercel.app/products/",
         {
           name: data.name,
           description: data.description,

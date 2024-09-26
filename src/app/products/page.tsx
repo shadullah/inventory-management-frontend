@@ -37,8 +37,8 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         const url = searchQ
-          ? `http://127.0.0.1:8000/products/?search=${searchQ}`
-          : `http://127.0.0.1:8000/products/?page=${currentP}`;
+          ? `https://inventory-management-backend-nu.vercel.app/products/?search=${searchQ}`
+          : `https://inventory-management-backend-nu.vercel.app/products/?page=${currentP}`;
         const res = await axios.get<ApiResponse>(url);
         console.log(res?.data);
         setProducts(res?.data?.results || []);

@@ -20,13 +20,10 @@ const Login = () => {
   const login = async (data: loginData) => {
     console.log(data);
     try {
-      const res = await axios.post(
-        "https://inventory-management-backend-nu.vercel.app/users/v1/login/",
-        {
-          username: data.username,
-          password: data.password,
-        }
-      );
+      const res = await axios.post("http://127.0.0.1:8000/users/v1/login/", {
+        username: data.username,
+        password: data.password,
+      });
       localStorage.setItem("id", res.data.user.id);
       localStorage.setItem("token", res.data.refresh);
       localStorage.setItem("accToken", res.data.access);

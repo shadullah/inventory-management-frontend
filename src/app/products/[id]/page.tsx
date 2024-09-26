@@ -46,7 +46,7 @@ const ProductDetails = ({ params }: { params: Params }) => {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const url = `https://inventory-management-backend-nu.vercel.app/products/${id}/`;
+        const url = `http://127.0.0.1:8000/products/${id}/`;
         const res = await axios.get(url);
         console.log(res?.data);
         setProduct(res?.data);
@@ -61,14 +61,11 @@ const ProductDetails = ({ params }: { params: Params }) => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(
-        `https://inventory-management-backend-nu.vercel.app/products/${id}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accToken")}`,
-          },
-        }
-      );
+      await axios.delete(`http://127.0.0.1:8000/products/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accToken")}`,
+        },
+      });
       router.push("/");
     } catch (error) {
       console.log(error);

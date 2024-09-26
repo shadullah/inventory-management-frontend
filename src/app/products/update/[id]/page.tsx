@@ -28,9 +28,7 @@ const Update = ({ params }: { params: Params }) => {
   useEffect(() => {
     const fetchedItem = async () => {
       try {
-        const res = await axios.get(
-          `https://inventory-management-backend-nu.vercel.app/products/${id}/`
-        );
+        const res = await axios.get(`http://127.0.0.1:8000/products/${id}/`);
         console.log(res.data);
         setProd(res?.data);
       } catch (error) {

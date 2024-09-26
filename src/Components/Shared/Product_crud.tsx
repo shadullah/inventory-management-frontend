@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface ProductData {
   id: string;
@@ -24,7 +24,15 @@ const Product_crud = ({ prod }: ProdProps) => {
   const { register, handleSubmit, setValue } = useForm<ProductData>();
   const router = useRouter();
   const [user] = useUsers();
-  const tok = localStorage.getItem("accToken");
+  const [tok, setToken] = useState<any>(null);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("accToken");
+    if (storedData) {
+      setToken(storedData);
+    }
+    console.log(storedData);
+  }, []);
 
   useEffect(() => {
     if (prod) {
@@ -38,6 +46,12 @@ const Product_crud = ({ prod }: ProdProps) => {
 
   const addOrUpdate = async (data: ProductData) => {
     console.log(data);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${tok}`,
+      },
+    };
+    console.log(config);
     if (prod) {
       await axios.put(
         `http://127.0.0.1:8000/products/${prod.id}/`,
@@ -49,11 +63,7 @@ const Product_crud = ({ prod }: ProdProps) => {
           image: data.image,
           user: user?.id || "",
         },
-        {
-          headers: {
-            Authorization: `Bearer ${tok}`,
-          },
-        }
+        config
       );
       console.log("product updated success");
       router.push(`/products/${prod.id}`);
@@ -68,11 +78,7 @@ const Product_crud = ({ prod }: ProdProps) => {
           image: data.image,
           user: user?.id,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${tok}`,
-          },
-        }
+        config
       );
       console.log("poduct added success");
       router.push("/");

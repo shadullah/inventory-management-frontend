@@ -31,8 +31,17 @@ const ProductDetails = ({ params }: { params: Params }) => {
   const { id } = params;
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoad] = useState(true);
-  const user = localStorage.getItem("id");
+  // const user = localStorage.getItem("id");
   const router = useRouter();
+
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("id");
+    if (storedData) {
+      setData(JSON.parse(storedData));
+    }
+  }, []);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -100,7 +109,7 @@ const ProductDetails = ({ params }: { params: Params }) => {
                   <p className="text-gray-600  my-6">{product?.description}</p>
                 </div>
               </div>
-              {product?.user?.id == user ? (
+              {product?.user?.id == data ? (
                 <>
                   <div className="mb-12 flex justify-around">
                     <Link href={`/products/update/${id}`}>

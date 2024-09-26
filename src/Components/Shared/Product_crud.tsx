@@ -24,7 +24,7 @@ const Product_crud = ({ prod }: ProdProps) => {
   const { register, handleSubmit, setValue } = useForm<ProductData>();
   const router = useRouter();
   const [user] = useUsers();
-  const [tok, setToken] = useState<any>(null);
+  const [tok, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     const storedData = localStorage.getItem("accToken");

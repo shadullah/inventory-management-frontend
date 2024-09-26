@@ -6,7 +6,7 @@ interface User {
 }
 
 const useUsers = () => {
-  const [data, setData] = useState<any>(null); // Adjust the type as needed
+  const [data, setData] = useState<User | null>(null); // Adjust the type as needed
 
   useEffect(() => {
     const storedData = localStorage.getItem("id");

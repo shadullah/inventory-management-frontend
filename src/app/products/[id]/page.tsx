@@ -34,7 +34,7 @@ const ProductDetails = ({ params }: { params: Params }) => {
   // const user = localStorage.getItem("id");
   const router = useRouter();
 
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<string | null>(null);
 
   useEffect(() => {
     const storedData = localStorage.getItem("id");

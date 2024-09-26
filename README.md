@@ -15,7 +15,7 @@ https://github.com/shadullah/inventory-management-backend
 Watch Live demo here:
 
 ```bash
-https://lazz-pharma-front.vercel.app/
+https://inventory-management-frontend-94lakvjnq-hexaalifs-projects.vercel.app/
 ```
 
 ## Installation
